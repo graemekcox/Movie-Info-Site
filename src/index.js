@@ -2,29 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
 
-
+import Movie from './Movie.js'
 import NavBar from './NavBar.js'
-
-const Movie = ({movie}) => {
-     const img_base = "https://image.tmdb.org/t/p/w500/";
-
-    return (
-    <div>
-        <Container className="movie">
-            <div className="movie-body">
-                <h2 className="movie-title">{JSON.stringify(movie.title)}</h2>
-                <img src={`${img_base}${movie.poster_path}`} alt="Poster" width="200"/>
-                <h5 className="movie-year">{JSON.stringify(movie.release_date)}</h5>
-                <h4 className="movie-plot">{JSON.stringify(movie.overview)}</h4>
-            </div>
-        </Container>
-    </div>
-    )
-}
 
 class App extends React.Component {
     constructor(props){
