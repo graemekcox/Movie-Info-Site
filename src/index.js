@@ -20,37 +20,10 @@ const Movie = ({movie}) => {
             </div>
         </Container>
     </div>
-)
+    )
 }
 
 class MovieForm extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {search_title: ''};
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event) {
-        this.setState({search_title: event.target.value});
-    }
-
-    handleSubmit(event) {
-        // alert('A movie was submitted: '  + this.state.value);
-        fetch('https://api.themoviedb.org/3/movie/76341?api_key=007d7263d6c65904a9285e1a3754a64c')
-        .then(res => res.json()) // parse GET output to JSON
-        .then(
-            (data) => {
-            this.setState({ movies: data}) // updata state to our movie
-        })
-        .catch(console.log)
-
-
-
-
-        event.preventDefault();
-    }
 
     render() {
         return (
@@ -58,13 +31,12 @@ class MovieForm extends React.Component {
             <a className="navbar-brand">Movie Info</a>
             <form className="form-inline">
                 <input className="form-control mr-sm-2" type="search" placeholder="Movie title" aria-label="Movie title"
-                    onChange={this.handleChange}/>
-                <button className="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={this.handleSubmit}>Search</button>
+                    onChange={this.props.change_action}/>
+                <button className="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={this.props.submit_action}>Search</button>
             </form>
             </nav>
         );
     }
-
 }
 
 class App extends React.Component {
@@ -73,8 +45,8 @@ class App extends React.Component {
         this.state = {
             movies: [],
             title: '',
-            search_title: 'Mad Max',
-            search_id: 76341 // Mad max
+            search_title: 'Her',
+            search_data: []
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -82,41 +54,49 @@ class App extends React.Component {
     }
 
     async componentDidMount(){
+        console.log("COMPONENT DID MOUNT");
+        console.log(this.state.search_title)
+        this.searchMovie()
+    }
+
+    async searchMovie() {
         const API_KEY = 'api_key=007d7263d6c65904a9285e1a3754a64c';
         const BASE_URL = 'https://api.themoviedb.org/3/movie/';
         const SEARCH_URL = 'https://api.themoviedb.org/3/search/movie?';
+        const search_id = 0;
 
         console.log(this.state.search_title)
         const url = SEARCH_URL + API_KEY + '&query=' + this.state.search_title;
         const response = await fetch(url);
         const data = await response.json();
-        this.setState({search_id: data.results[0].id})
-        console.log(data.results[0]);
 
-        // Now grab movie details based on search
-        fetch(BASE_URL+data.results[0].id + '?' + API_KEY)
-        .then(res => res.json()) // parse GET output to JSON
-        .then(
-            (data) => {
-            this.setState({ movies: data}) // updata state to our movie
-        })
-        .catch(console.log)
+        console.log(this.state.movie_id);
 
+        if (response.ok){
+            console.log("Fetch movie details")
+            // console.log(data.results[0]);
+            // Now grab movie details based on search
+
+            fetch(BASE_URL+data.results[0].id + '?' + API_KEY)
+            .then(res => res.json()) // parse GET output to JSON
+            .then(
+                (data) => {
+                this.setState({ movies: data}) // updata state to our movie
+            })
+            .catch(console.log)
+        }
     }
 
 
     handleChange(event) {
         this.setState({search_title: event.target.value});
+        // console.log("Updated text")
+        // console.log(this.state.search_title)
     }
 
-    handleSubmit(event) {
-        alert('A movie was submitted: '  + this.state.search_title);
-        fetch('https://api.themoviedb.org/3/movie/152601?api_key=007d7263d6c65904a9285e1a3754a64c')
-        .then(res => res.json()) // parse GET output to JSON
-        .then( (data) => {
-            this.setState({ movies: data}) // updata state to our movie
-        })
-        .catch(console.log)
+    async handleSubmit(event) {
+        event.preventDefault()
+        this.searchMovie()
     }
 
     handleInputTitle = (event) => {
@@ -127,23 +107,12 @@ class App extends React.Component {
 
     render() {
         const {title} = this.state;
-        console.log("I am rendering");
         return (
             <div className="app">
                 <Jumbotron>
                 </Jumbotron>
 
-                {/* <MovieForm></MovieForm> */}
-                <nav className="navbar navbar-light bg-light justify-content-betwee">
-                    <a className="navbar-brand">Movie Info</a>
-                    <form className="form-inline">
-                        <input className="form-control mr-sm-2" type="search" placeholder="Movie title" aria-label="Movie title"
-                            onChange={this.handleChange}/>
-                        <button className="btn btn-outline-success my-2 my-sm-0" type="submit" onClick={this.handleSubmit}>Search</button>
-                    </form>
-                </nav>
-
-
+                <MovieForm change_action={this.handleChange} submit_action={this.handleSubmit}></MovieForm>
                 <Movie movie={this.state.movies}/>
 
             </div>
