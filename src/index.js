@@ -8,6 +8,9 @@ import Button from 'react-bootstrap/Button';
 import Movie from './Movie.js'
 import NavBar from './NavBar.js'
 
+
+
+
 class App extends React.Component {
     constructor(props){
         super(props);
@@ -30,14 +33,10 @@ class App extends React.Component {
         const API_KEY = 'api_key=007d7263d6c65904a9285e1a3754a64c';
         const BASE_URL = 'https://api.themoviedb.org/3/movie/';
         const SEARCH_URL = 'https://api.themoviedb.org/3/search/movie?';
-        const search_id = 0;
 
-        console.log(this.state.search_title)
         const url = SEARCH_URL + API_KEY + '&query=' + this.state.search_title;
         const response = await fetch(url);
         const data = await response.json();
-
-        console.log(this.state.movie_id);
 
         if (response.ok){
             // console.log(data.results[0]);
@@ -51,13 +50,11 @@ class App extends React.Component {
             })
             .catch(console.log)
         }
-        console.log(data.results[0])
     }
 
 
     handleChange(event) {
         this.setState({search_title: event.target.value});
-
     }
 
     async handleSubmit(event) {
@@ -78,12 +75,10 @@ class App extends React.Component {
                 <NavBar change_action={this.handleChange} submit_action={this.handleSubmit}/>
                 <Jumbotron/>
                 <Movie movie={this.state.movies}/>
-
             </div>
         )
     }
 }
-
 
 ReactDOM.render(
     <App />,
