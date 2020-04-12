@@ -5,7 +5,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Container from 'react-bootstrap/Container';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Button from 'react-bootstrap/Button';
-import MovieForm from './MovieForm.js'
+
+
+import NavBar from './NavBar.js'
 
 const Movie = ({movie}) => {
      const img_base = "https://image.tmdb.org/t/p/w500/";
@@ -39,8 +41,6 @@ class App extends React.Component {
     }
 
     async componentDidMount(){
-        console.log("COMPONENT DID MOUNT");
-        console.log(this.state.search_title)
         this.searchMovie()
     }
 
@@ -58,7 +58,6 @@ class App extends React.Component {
         console.log(this.state.movie_id);
 
         if (response.ok){
-            console.log("Fetch movie details")
             // console.log(data.results[0]);
             // Now grab movie details based on search
 
@@ -70,13 +69,13 @@ class App extends React.Component {
             })
             .catch(console.log)
         }
+        console.log(data.results[0])
     }
 
 
     handleChange(event) {
         this.setState({search_title: event.target.value});
-        // console.log("Updated text")
-        // console.log(this.state.search_title)
+
     }
 
     async handleSubmit(event) {
@@ -94,10 +93,8 @@ class App extends React.Component {
         const {title} = this.state;
         return (
             <div className="app">
-                <Jumbotron>
-                </Jumbotron>
-
-                <MovieForm change_action={this.handleChange} submit_action={this.handleSubmit}></MovieForm>
+                <NavBar change_action={this.handleChange} submit_action={this.handleSubmit}/>
+                <Jumbotron/>
                 <Movie movie={this.state.movies}/>
 
             </div>

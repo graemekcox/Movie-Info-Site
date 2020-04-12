@@ -1,11 +1,9 @@
 import React from 'react';
 
 class MovieForm extends React.Component {
-
     render() {
         return (
             <nav className="navbar navbar-light bg-light justify-content-betwee">
-            <a className="navbar-brand">Movie Info</a>
             <form className="form-inline">
                 <input className="form-control mr-sm-2" type="search" placeholder="Movie title" aria-label="Movie title"
                     onChange={this.props.change_action}/>
