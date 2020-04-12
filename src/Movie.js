@@ -33,8 +33,8 @@ class Movie extends React.Component {
                         </Col>
 
                         <Col xs={4}>
-                            <div className="card" style ={{ backgroundImage: "url("+bg+")" }}>
-                                <img className="card-img-top" src="..." alt="This will have more info"/>
+                            <div className="card">
+                                <img className="card-img-top" src={`${img_base}${this.props.movie.backdrop_path}`} alt="This will have more info"/>
                                 <div className="card-body">
                                     <h5 className="card-title">{this.props.movie.title}</h5>
                                     <p className="card-text">{this.props.movie.tagline}</p>
